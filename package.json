@@ -1,0 +1,148 @@
+{
+  "name": "sde",
+  "displayName": "Swift Development Environment",
+  "description": "Swift Development Environment based on VS Code",
+  "author": {
+    "name": "Jin Mingjian",
+    "email": "jin.phd@gmail.com",
+    "url": "https://github.com/jinmingjian"
+  },
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "publisher": "jinmingjian",
+  "icon": "icons/icon.png",
+  "galleryBanner": {
+    "color": "#FC823F",
+    "theme": "light"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jinmingjian/sde"
+  },
+  "engines": {
+    "vscode": "^1.8.0"
+  },
+  "categories": [
+    "Languages"
+  ],
+  "keywords": [
+    "swift",
+    "sde",
+    "linux",
+    "lldb"
+  ],
+  "preview": true,
+  "activationEvents": [
+    "onLanguage:swift",
+    "onCommand:sde.commands.buildPackage",
+    "onCommand:sde.commands.debug.provideInitialConfigurations"
+  ],
+  "main": "./out/src/clientMain",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sde.commands.buildPackage",
+        "title": "Build Package",
+        "category": "SDE"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "sde.commands.buildPackage",
+        "key": "alt+b",
+        "mac": "alt+b"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Swift Development Environment Configuration",
+      "properties": {
+        "swift.path.sourcekitd_repl": {
+          "type": "string",
+          "default": "/usr/bin/sourcekitd-repl",
+          "description": "The fully path to the sourcekitd-repl."
+        },
+        "swift.path.swift_driver_bin": {
+          "type": "string",
+          "default": "/usr/bin/swift",
+          "description": "The fully path to the swift driver binary."
+        },
+        "sde.enableTracing.client": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable tracing output for SDE client"
+        },
+        "sde.enableTracing.LSPServer": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable tracing output for SDE LSP server"
+        },
+        "swift.diagnosis.max_num_problems": {
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server. NOET: Not used now."
+        },
+        "swift.sourcekit.maxBytesAllowedForCodeCompletionResponse": {
+          "type": "number",
+          "default": 262144,
+          "description": "Controls the maximum accepted bytes allowed for every code completion response."
+        }
+      }
+    },
+    "breakpoints": [
+      {
+        "language": "swift"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "swift-debug",
+        "label": "Swift Debug",
+        "program": "./out/src/debug/debugs.js",
+        "runtime": "node",
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Absolute path to the program being debugged",
+                "default": "${workspaceRoot}/.build/debug/path-to-program-debugged"
+              }
+            }
+          }
+        },
+        "initialConfigurations": "sde.commands.debug.provideInitialConfigurations"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "npm run prepare-out && npm run peg1 && npm run peg2 && npm run copy-parser-dts && npm run compile",
+    "compile": "tsc -p ./",
+    "prepare-out": "mkdir -p out/src/debug/lldbmi",
+    "peg1": "pegjs -o out/src/debug/lldbmi/mi_output_parser.js src/debug/lldbmi/mi_output_grammar.pegjs",
+    "peg2": "pegjs -o out/src/debug/lldbmi/raw_command_output_parser.js src/debug/lldbmi/raw_command_output_parser.pegjs",
+    "copy-parser-dts": "cp src/debug/lldbmi/mi_output_parser.d.ts out/src/debug/lldbmi/mi_output_parser.d.ts",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "typescript": "^2.0.0",
+    "vscode": "^1.0.0",
+    "mocha": "^2.3.3",
+    "pegjs": "^0.10.0",
+    "js-yaml": "^3.7.0",
+    "@types/node": "latest",
+    "@types/bunyan": "latest"
+  },
+  "dependencies": {
+    "bunyan": "^1.8.5",
+    "fs-promise": "^1.0.0",
+    "vscode-debugadapter": "^1.15.0",
+    "vscode-debugprotocol": "^1.15.0",
+    "vscode-languageclient": "^3.0.2-beta.2",
+    "vscode-languageserver": "^3.0.2-beta.2"
+  }
+}

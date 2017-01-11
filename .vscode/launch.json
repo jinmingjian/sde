@@ -1,0 +1,105 @@
+// A launch configuration that compiles the extension and then opens it inside a new window
+{
+	"version": "0.1.0",
+	"configurations": [
+		{
+			"name": "Launch Extension",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceRoot}"
+			],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/out/src/**/*.js"
+			],
+			"preLaunchTask": "npm"
+		},
+		{
+			"name": "Launch Tests",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceRoot}",
+				"--extensionTestsPath=${workspaceRoot}/out/test"
+			],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/out/test"
+			],
+			"preLaunchTask": "npm"
+		},
+		{
+			"name": "Launch SanityTest",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/test/SanityTest.ts",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": null,
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/out/test/**/*.js"
+			]
+		},
+		{
+			"name": "Launch benchmark test",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/test/benchmarks.ts",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": null,
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/out/test/**/*.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Run Debug Server",
+			"cwd": "${workspaceRoot}",
+			"program": "${workspaceRoot}/src/debug/debugs.ts",
+			"args": [
+				"--server=4711"
+			],
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/out/src/debug/**/*.js"
+			]
+		},
+		{
+			"name": "Attach to LSP server",
+			"type": "node",
+			"request": "attach",
+			"port": 6004,
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/out/src/server/**/*.js"
+			]
+		}
+	]
+}

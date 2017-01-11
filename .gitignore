@@ -1,0 +1,9 @@
+out
+server
+node_modules
+
+logs
+*.log
+*.vsix
+npm-debug.log*
+
