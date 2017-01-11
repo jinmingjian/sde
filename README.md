@@ -37,11 +37,11 @@ The current work of project are done in the free time of the author for his love
 ## Usage
 Just search "sde" and install from your vscode's Extensions view.
 
-This project only depends on official Swift project's tools test-side tool sourcekitd-repl which [has became available for Linux now](https://bugs.swift.org/browse/SR-1676) by Swift development team. But I consider to make a [a more controllable interface](https://github.com/jinmingjian/sde/issues/9). See [FAQ](#FAQ) to get more infos.
+This project only __depends on official Swift project's tools test-side tool sourcekitd-repl__ which [has became available for Linux now](https://bugs.swift.org/browse/SR-1676) by Swift development team. But I consider to make a [a more controllable interface](https://github.com/jinmingjian/sde/issues/9). See [FAQ](#FAQ) to get more infos.
 
 The project is based on the latest dev build of swift (and its tools) and the latest release of vscode/typescript. Because it uses new features as possible to make the developer's life easier. We consider to make the versions of dependencies stable when the dependencies go stable as well.
 
-*NOTE1*: Before trying out, make sure you have got sourcekitd-repl(Default to /usr/bin/sourcekitd-repl, but can be configured via "swift.path.sourcekitd_repl") from official buildings, otherwise no functionality available except debugging(it depends on lldb in the exec path...).
+__*NOTE1*__: Before trying out, __make sure__ you have got sourcekitd-repl(Default to /usr/bin/sourcekitd-repl, but can be configured via "swift.path.sourcekitd_repl") from official buildings, otherwise no functionality available except debugging(it depends on lldb in the exec path...).
 
 *NOTE2:* The extension in the marketplace will be rolling-updated in a timed rhythm, such as one week. No semantic versioning or backward compatibility guaranteed here (in that it makes no senses as mentioned above). It is better to check the changelog before your update.
 
