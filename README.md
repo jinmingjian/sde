@@ -35,6 +35,8 @@ See more road map in [the wiki](https://github.com/jinmingjian/sde/wiki)
 The current work of project are done in the free time of the author for his love to swift@linux. So, it is best to make limited resources to focus on the most important functionalities. However, always welcome to provide your ideas on the issues.  
 
 ## Usage
+Just search "sde" and install from your vscode's Extensions view.
+
 This project only depends on official Swift project's tools test-side tool sourcekitd-repl which [has became available for Linux now](https://bugs.swift.org/browse/SR-1676) by Swift development team. But I consider to make a [a more controllable interface](https://github.com/jinmingjian/sde/issues/9). See [FAQ](#FAQ) to get more infos.
 
 The project is based on the latest dev build of swift (and its tools) and the latest release of vscode/typescript. Because it uses new features as possible to make the developer's life easier. We consider to make the versions of dependencies stable when the dependencies go stable as well.
