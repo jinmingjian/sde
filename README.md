@@ -34,6 +34,8 @@ See more road map in [the wiki](https://github.com/jinmingjian/sde/wiki)
 
 The current work of project are done in the free time of the author for his love to swift@linux. So, it is best to make limited resources to focus on the most important functionalities. However, always welcome to provide your ideas on the issues.  
 
+History changes can be seen in [CHANGELOG](CHANGELOG.md).
+
 ## Usage
 Just search "sde" and install from your vscode's Extensions view.
 

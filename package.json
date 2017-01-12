@@ -74,7 +74,7 @@
         },
         "sde.enableTracing.LSPServer": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Enable tracing output for SDE LSP server"
         },
         "swift.diagnosis.max_num_problems": {
