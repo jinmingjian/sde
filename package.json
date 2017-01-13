@@ -8,7 +8,7 @@
     "url": "https://github.com/jinmingjian"
   },
   "license": "Apache-2.0",
-  "version": "1.0.20170113",
+  "version": "1.0.20170114",
   "publisher": "jinmingjian",
   "icon": "icons/icon.png",
   "galleryBanner": {
@@ -66,6 +66,11 @@
           "type": "string",
           "default": "/usr/bin/swift",
           "description": "The fully path to the swift driver binary."
+        },
+        "swift.path.shell": {
+          "type": "string",
+          "default": "/bin/sh",
+          "description": "The fully path to the shell binary."
         },
         "sde.enableTracing.client": {
           "type": "boolean",

@@ -13,7 +13,6 @@ import {
 	Files, FileChangeType
 } from 'vscode-languageserver'
 import * as fs from 'fs'
-import * as os from 'os'
 
 const spawn = require('child_process').spawn
 
@@ -33,7 +32,9 @@ export function initializeModuleMeta() {
 	trace('***initializeModuleMeta***')
 	allModulePaths = new Map()
 	allModuleSources = new Map()
-	const sp = spawn(getShellExecPath(), ["-c",
+	const shPath = getShellExecPath()
+	trace('***getShellExecPath: ', shPath)
+	const sp = spawn(shPath, ["-c",
 		`cd ${workspaceRoot} && ${swiftDiverBinPath} package describe --type json`,
 	])
 	sp.stdout.on('data', (data) => {
@@ -129,7 +130,7 @@ export let swiftDiverBinPath: string = null;
 export let maxBytesAllowedForCodeCompletionResponse: number = 0;
 //internal
 let maxNumProblems = null;
-
+let shellPath = null
 // The settings have changed. Is send on server activation
 // as well.
 connection.onDidChangeConfiguration((change) => {
@@ -139,6 +140,7 @@ connection.onDidChangeConfiguration((change) => {
 
 	maxNumProblems = sdeSettings.diagnosis.max_num_problems
 	swiftDiverBinPath = sdeSettings.path.swift_driver_bin
+	shellPath = sdeSettings.path.shell
 	maxBytesAllowedForCodeCompletionResponse =
 		sdeSettings.sourcekit.maxBytesAllowedForCodeCompletionResponse
 	//FIXME reconfigure when configs haved  
@@ -512,14 +514,9 @@ function decode(str) {
 	return str.replace(/(&quot;|&lt;|&gt;|&amp;)/g, (m, c) => xmlEntities[c])
 }
 
-//FIXME add an config option?
+//FIX issue#15
 function getShellExecPath() {
-	switch (os.platform()) {
-		case 'darwin':
-			return "/bin/sh"
-		default://FIXME
-			return "/usr/bin/sh"
-	}
+	return fs.existsSync(shellPath) ? shellPath : "/usr/bin/sh" 
 }
 /**
  * NOTE:
