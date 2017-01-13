@@ -13,6 +13,7 @@ import {
 	Files, FileChangeType
 } from 'vscode-languageserver'
 import * as fs from 'fs'
+import * as os from 'os'
 
 const spawn = require('child_process').spawn
 
@@ -32,7 +33,7 @@ export function initializeModuleMeta() {
 	trace('***initializeModuleMeta***')
 	allModulePaths = new Map()
 	allModuleSources = new Map()
-	const sp = spawn("/usr/bin/sh", ["-c",
+	const sp = spawn(getShellExecPath(), ["-c",
 		`cd ${workspaceRoot} && ${swiftDiverBinPath} package describe --type json`,
 	])
 	sp.stdout.on('data', (data) => {
@@ -511,6 +512,15 @@ function decode(str) {
 	return str.replace(/(&quot;|&lt;|&gt;|&amp;)/g, (m, c) => xmlEntities[c])
 }
 
+//FIXME add an config option?
+function getShellExecPath() {
+	switch (os.platform()) {
+		case 'darwin':
+			return "/bin/sh"
+		default://FIXME
+			return "/usr/bin/sh"
+	}
+}
 /**
  * NOTE:
  * now the SDE only support the convention based build
@@ -543,3 +553,4 @@ export function trace(prefix: string, msg?: string) {
 		}
 	}
 }
+
