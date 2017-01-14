@@ -5,6 +5,7 @@ node_js:
 before_install:
     - "npm i -g typescript"
     - "npm i -g vsce"
+    - "tsc -v"
 script:
     - npm run build
     - vsce package
