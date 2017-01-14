@@ -1,7 +1,7 @@
 sudo: required
 language: node_js
 node_js:
-  - 6
+  - 7
 before_install:
     - "npm i -g typescript"
     - "npm i -g vsce"
