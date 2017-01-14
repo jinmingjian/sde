@@ -1,11 +1,13 @@
 sudo: required
+os:
+  - linux
+  - osx
 language: node_js
 node_js:
+  - 6.5.0
   - 7
 before_install:
-    - "npm i -g typescript"
-    - "npm i -g vsce"
-    - "tsc -v"
+  - "npm i -g typescript"
+  - "npm i -g vsce"
 script:
-    - npm run build
-    - vsce package
+  - vsce package

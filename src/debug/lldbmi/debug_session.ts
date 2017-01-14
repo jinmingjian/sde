@@ -6,7 +6,8 @@ import * as events from 'events';
 import * as stream from 'stream';
 import * as parser from './mi_output_parser';
 import { RecordType } from './mi_output';
-import * as bunyan from 'bunyan';
+// import * as bunyan from 'bunyan';
+import Logger = require('bunyan');
 import * as LLDBEvents from './events';
 import {
   IBreakpointInfo, IBreakpointLocationInfo,
@@ -79,13 +80,13 @@ export default class DebugSession extends events.EventEmitter {
   private cmdQueue: DebugCommand[];
   // used to to ensure session cleanup is only done once
   private cleanupWasCalled: boolean;
-  private _logger: bunyan.Logger;
+  private _logger: Logger;
 
-  get logger(): bunyan.Logger {
+  get logger(): Logger {
     return this._logger;
   }
 
-  set logger(logger: bunyan.Logger) {
+  set logger(logger: Logger) {
     this._logger = logger;
   }
 

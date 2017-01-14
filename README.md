@@ -4,6 +4,9 @@
 
 <br/>
 
+[![Build Status](https://travis-ci.org/jinmingjian/sde.svg?branch=master)](https://travis-ci.org/jinmingjian/sde)
+
+
 ## Quick Preview
 ![preview](docs/preview.gif)
 
@@ -54,7 +57,8 @@ To futher embedded into the server side Swift communities, I am proactively purs
 ## FAQ
 * How to get the sourcekitd-repl executable on my Linux?
 
-  The best way is that you build the tool youself according to the official documents. And before getting sourcekitd-repl, you should frist build sourcekit library(sourcekitdInProc in Linux). There are some pitfalls from my experience. Linux has many distros. The runtime environments vary much. I use Arch which needs to do some patch to enable the tool sides building. Maybe the easier way is to provide the binaies of tools somewhere. But this is a little brittle for different versions of libraries shipped by different distros. If you like to consume in this way and help to provide some feedbacks, open a new issue and I will help you in that. In the meantime, I consider to make a [more controllable interface](https://github.com/jinmingjian/sde/issues/9).    
+  The best way is that you build the tool youself according to the official documents. And before getting sourcekitd-repl, you should frist build sourcekit library(sourcekitdInProc in Linux). There are some pitfalls from my experience. Linux has many distros. The runtime environments vary much. I use Arch which needs to do some patch to enable the tool sides building. Maybe the easier way is to provide the binaies of tools somewhere. But this is a little brittle for different versions of libraries shipped by different distros. If you like to consume in this way and help to provide some feedbacks, open a new issue and I will help you in that. Some useful tips to build this tools could been seen [this issue](https://github.com/jinmingjian/sde/issues/13).
+  In the meantime, I consider to make a [more controllable interface](https://github.com/jinmingjian/sde/issues/9).    
 
 * Why not contribute to the existed projects?
 
