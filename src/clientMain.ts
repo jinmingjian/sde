@@ -3,11 +3,11 @@
 import * as path from 'path'
 import * as fs from 'fs'
 import * as tools from './SwiftTools'
-
+import * as os from 'os'
 import {
-	workspace, window, commands, languages,
+	workspace, window, commands, languages, extensions,
 	Disposable, ExtensionContext, Uri, DiagnosticCollection,
-	StatusBarItem, StatusBarAlignment,OutputChannel
+	StatusBarItem, StatusBarAlignment, OutputChannel
 } from 'vscode';
 import {
 	LanguageClient, LanguageClientOptions,
@@ -15,16 +15,18 @@ import {
 } from 'vscode-languageclient';
 
 const LENGTH_PKG_FILE_NAME: number = "Package.swift".length
+const PUBLISHER_NAME = "jinmingjian.sde"
 
 let swiftBinPath = null
 let swiftPackageManifestPath = null
+let skProtocolProcess = null
 export let isTracingOn: boolean = false
 export let isLSPServerTracingOn: boolean = false
 export let diagnosticCollection: DiagnosticCollection
 let spmChannel: OutputChannel = null
 
 export function activate(context: ExtensionContext) {
-    initConfig()
+	initConfig()
 
 	// The server is implemented in node
 	let serverModule = context.asAbsolutePath(path.join('out/src/server', 'server.js'));
@@ -47,7 +49,10 @@ export function activate(context: ExtensionContext) {
 			// Notify the server about file changes to '.clientrc files contain in the workspace
 			fileEvents: workspace.createFileSystemWatcher('**/*.swift')
 		},
-		initializationOptions: {'isLSPServerTracingOn':isLSPServerTracingOn},
+		initializationOptions: {
+			'isLSPServerTracingOn': isLSPServerTracingOn,
+			'skProtocolProcess': skProtocolProcess
+		},
 	}
 
 	// console.log(workspace.getConfiguration().get('editor.quickSuggestions'))
@@ -109,9 +114,12 @@ function initConfig() {
 	workspace.getConfiguration().update('sde.buildOnSave', true, false)
 	swiftBinPath = workspace.getConfiguration().get('swift.path.swift_driver_bin')
 	// console.log('sde.enableTracing: '+workspace.getConfiguration().get('sde.enableTracing.client'))
+	skProtocolProcess = getSkProtocolProcessPath(
+		extensions.getExtension(PUBLISHER_NAME).extensionPath)
+
 	isTracingOn = <boolean>workspace.getConfiguration().get('sde.enableTracing.client')
 	isLSPServerTracingOn = <boolean>workspace.getConfiguration().get('sde.enableTracing.LSPServer')
-	console.log('isTracingOn: '+isTracingOn)
+	console.log('isTracingOn: ' + isTracingOn)
 	if (isTracingOn) {
 		//TODO
 	}
@@ -174,7 +182,16 @@ export function trace(msg) {
 	}
 }
 
-export function dumpInConsole(msg:string) {
-    spmChannel.append(msg)
+export function dumpInConsole(msg: string) {
+	spmChannel.append(msg)
+}
+
+function getSkProtocolProcessPath(extPath: string) {
+	switch (os.platform()) {
+		case 'darwin':
+			return path.join(extPath, "bin", "macos", 'sourcekitd-repl')
+		default://FIXME
+			return path.join(extPath, "bin", "linux", 'sourcekitd-repl')
+	}
 }
 

@@ -4,8 +4,7 @@
 
 <br/>
 
-[![Build Status](https://travis-ci.org/jinmingjian/sde.svg?branch=master)](https://travis-ci.org/jinmingjian/sde)
-
+[![Build Status](https://travis-ci.org/jinmingjian/sde.svg?branch=master)](https://travis-ci.org/jinmingjian/sde) ![Ubuntu](https://img.shields.io/badge/Ubuntu-16.04-6193DF.svg) ![Visual Studio Code Version](https://img.shields.io/badge/Visual%20Studio%20Code-1.8.1-6193DF.svg) ![Swift Version](https://img.shields.io/badge/Swift-3.1.0-orange.svg) [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager) ![Plaforms](https://img.shields.io/badge/Platform-Linux|macOS-lightgrey.svg) ![License Apache](https://img.shields.io/badge/License-Apache%20v2-lightgrey.svg)
 
 ## Quick Preview
 ![preview](docs/preview.gif)
@@ -43,6 +42,8 @@ History changes can be seen in [CHANGELOG](CHANGELOG.md).
 Just search "sde" and install from your vscode's Extensions view.
 
 This project only __depends on official Swift project's tools test-side tool [sourcekitd-repl](https://github.com/apple/swift/tree/master/tools/SourceKit/tools/sourcekitd-repl)__ which [has became available for Linux now](https://bugs.swift.org/browse/SR-1676) by Swift development team. But I consider to make a [a more controllable interface](https://github.com/jinmingjian/sde/issues/9). See [FAQ](#FAQ) to get more infos.
+
+NOTE: **now add an experimental built-in sourcekit interface (only for macOS)**. If you can not build your own sourcekitd-repl, You can use the built-in one via "swift.sourcekit.use_built_in_bin" config option. Please make you use the development snapshot . More discusses could been seen in [this issue](https://github.com/jinmingjian/sde/issues/13).
 
 The project is based on the latest dev build of swift (and its tools) and the latest release of vscode/typescript. Because it uses new features as possible to make the developer's life easier. We consider to make the versions of dependencies stable when the dependencies go stable as well.
 

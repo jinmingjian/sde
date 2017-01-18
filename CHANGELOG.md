@@ -1,6 +1,11 @@
 Change Log
 ===
 
+1.0.20170118
+---
+
+* experimental built-in sourcekit interface (only for macOS)
+
 1.0.20170114
 ---
 

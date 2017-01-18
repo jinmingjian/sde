@@ -8,7 +8,7 @@
     "url": "https://github.com/jinmingjian"
   },
   "license": "Apache-2.0",
-  "version": "1.0.20170114",
+  "version": "1.0.20170118",
   "publisher": "jinmingjian",
   "icon": "icons/icon.png",
   "galleryBanner": {
@@ -71,6 +71,11 @@
           "type": "string",
           "default": "/bin/sh",
           "description": "The fully path to the shell binary."
+        },
+        "swift.sourcekit.use_built_in_bin": {
+          "type": "boolean",
+          "default": false,
+          "description": "(Experimental)Use built in binary to talk sourcekitd.(now only for macos)"
         },
         "sde.enableTracing.client": {
           "type": "boolean",
@@ -147,7 +152,7 @@
     "fs-promise": "^1.0.0",
     "vscode-debugadapter": "^1.15.0",
     "vscode-debugprotocol": "^1.15.0",
-    "vscode-languageclient": "^3.0.2-beta.2",
-    "vscode-languageserver": "^3.0.2-beta.2"
+    "vscode-languageclient": "^3.0.2-beta.5",
+    "vscode-languageserver": "^3.0.2-beta.5"
   }
 }

@@ -6,7 +6,7 @@ import {
 	createConnection, IConnection, TextDocumentSyncKind,
 	TextDocuments, TextDocument, Diagnostic, DiagnosticSeverity,
 	InitializeParams, InitializeResult, TextDocumentPositionParams,
-	CompletionItem, CompletionItemKind, TypedString,
+	CompletionItem, CompletionItemKind, InsertTextFormat,
 	DocumentFormattingParams, TextDocumentIdentifier, TextEdit,
 	Hover, MarkedString,
 	Definition,
@@ -91,7 +91,9 @@ let workspaceRoot: string;
 export let isTracingOn: boolean;
 connection.onInitialize((params: InitializeParams, cancellationToken): InitializeResult => {
 	isTracingOn = params.initializationOptions.isLSPServerTracingOn
-	trace("-->isLSPServerTracingOn:", '' + isTracingOn)
+	skProtocolProcess = params.initializationOptions.skProtocolProcess
+	trace("-->onInitialize ", `isTracingOn=[${isTracingOn}],
+	skProtocolProcess=[${skProtocolProcess}]`)
 	workspaceRoot = params.rootPath;
 	return {
 		capabilities: {
@@ -129,8 +131,10 @@ export let repl = null;
 export let swiftDiverBinPath: string = null;
 export let maxBytesAllowedForCodeCompletionResponse: number = 0;
 //internal
-let maxNumProblems = null;
+let skProtocolProcess = null
+let maxNumProblems = null
 let shellPath = null
+let useBuiltInBin: boolean = false
 // The settings have changed. Is send on server activation
 // as well.
 connection.onDidChangeConfiguration((change) => {
@@ -141,6 +145,13 @@ connection.onDidChangeConfiguration((change) => {
 	maxNumProblems = sdeSettings.diagnosis.max_num_problems
 	swiftDiverBinPath = sdeSettings.path.swift_driver_bin
 	shellPath = sdeSettings.path.shell
+	useBuiltInBin = sdeSettings.sourcekit.use_built_in_bin
+
+	trace(`-->onDidChangeConfiguration tracing: 
+	    swiftDiverBinPath=[${swiftDiverBinPath}],
+		shellPath=[${shellPath}],
+		useBuiltInBin=[${useBuiltInBin}]`)
+
 	maxBytesAllowedForCodeCompletionResponse =
 		sdeSettings.sourcekit.maxBytesAllowedForCodeCompletionResponse
 	//FIXME reconfigure when configs haved  
@@ -155,8 +166,12 @@ connection.onDidChangeConfiguration((change) => {
 });
 
 function initializeReplProcess() {
-	trace('***sourcekitd_repl initializing...***')
-	repl = spawn(sdeSettings.path.sourcekitd_repl);
+	trace(`***sourcekitd_repl initializing wit 
+	skProtocolProcess=[${skProtocolProcess}],
+	sdeSettings.path.sourcekitd_repl=[${sdeSettings.path.sourcekitd_repl}]`)
+	repl = useBuiltInBin ?
+		spawn(skProtocolProcess) :
+		spawn(sdeSettings.path.sourcekitd_repl)
 	repl.stderr.on('data', (data) => {
 		if (isTracingOn) {
 			trace('***stderr***', '' + data)
@@ -165,7 +180,9 @@ function initializeReplProcess() {
 	repl.on('exit', function (code, signal) {
 		trace('***sourcekitd_repl exited***', `code: ${code}, signal: ${signal}`)
 		trace('***sourcekitd_repl exited***', 'to spawn a new sourcekitd_repl process')
-		repl = spawn(sdeSettings.path.sourcekitd_repl);
+		repl = useBuiltInBin ?
+			spawn(skProtocolProcess) :
+			spawn(sdeSettings.path.sourcekitd_repl)
 	})
 	repl.on('error', function (err) {
 		trace('***sourcekitd_repl error***', (<Error>err).message)
@@ -254,6 +271,7 @@ connection.onCompletion(({textDocument, position}): Thenable<CompletionItem[]> =
 				item.kind = toCompletionItemKind(c["key.kind"])
 				item.detail = `${c["key.modulename"]}.${c["key.name"]}`
 				item.insertText = createSuggest(c["key.sourcetext"])
+				item.insertTextFormat = InsertTextFormat.Snippet
 				items.push(item);
 			}
 			return items;
@@ -266,13 +284,13 @@ connection.onCompletion(({textDocument, position}): Thenable<CompletionItem[]> =
 /**
  * ref: https://github.com/facebook/nuclide/blob/master/pkg/nuclide-swift/lib/sourcekitten/Complete.js#L57
  */
-function createSuggest(sourcetext: string): TypedString {
+function createSuggest(sourcetext: string): string {
 	// trace("---createSuggest--- ",sourcetext)
 	let index = 1
 	let snp = sourcetext.replace(/<#T##(.+?)#>/g, (m, g) => {
 		return "${" + (index++) + ":" + g.split('##')[0] + "}"
 	})
-	return TypedString.createSnippet(snp.replace('<#code#>', `\${${index++}}`))
+	return snp.replace('<#code#>', `\${${index++}}`)
 };
 
 //TODO more meanful CompletionItemKinds...
@@ -516,7 +534,7 @@ function decode(str) {
 
 //FIX issue#15
 function getShellExecPath() {
-	return fs.existsSync(shellPath) ? shellPath : "/usr/bin/sh" 
+	return fs.existsSync(shellPath) ? shellPath : "/usr/bin/sh"
 }
 /**
  * NOTE:
