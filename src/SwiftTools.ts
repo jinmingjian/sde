@@ -46,9 +46,9 @@ export function buildPackage(swiftBinPath: string, pkgPath: string, options: str
         diagnosticCollection.clear();
         if (stderr && stdout) {
             dumpDiagnostics()
+        } else if (stderr) {
+            makeBuildStatusFailed()
         } else {
-            // trace(stdout)
-            // trace("build succeeded")
             makeBuildStatusSuccessful()
         }
     })
@@ -113,7 +113,7 @@ function dumpDiagnostics() {
         }
     }
     diags.push(oneDiag)//push last oneDiag
-    diags.forEach(d => makeDiagnostic(d))
+    diags.forEach(d => { if (d) {makeDiagnostic(d)} })
     diagnosticMap.forEach((diags, file) => {
         diagnosticCollection.set(Uri.parse(file), diags);
     });
