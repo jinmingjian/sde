@@ -1,6 +1,10 @@
 Change Log
 ===
 
+1.0.20170129
+---
+* serveral fixs for release 1.x and we want to release great new 2.0
+
 1.0.20170118
 ---
 
