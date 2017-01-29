@@ -67,7 +67,7 @@ function request0(
     if (isASCIIOnly(srcText)) {//TODO issue#9
         request += `,\n  key.sourcetext: ${srcText}`
     }
-    request += "\n}\n"
+    request += " }\n"
     return response0(request)
 };
 
@@ -151,8 +151,7 @@ function editorOpen(
   key.enablesyntaxmap: ${booleanToInt(keyEnableSyntaxMap)},
   key.enablesubstructure: ${booleanToInt(keyEnableSubStructure)},
   key.syntactic_only: ${booleanToInt(keySyntacticOnly)},
-  key.sourcetext: ${keySourcetext}
-}
+  key.sourcetext: ${keySourcetext} }
 `;
     if (isASCIIOnly(keySourcetext)) {
         request += `,\n  key.sourcetext: ${keySourcetext}`
