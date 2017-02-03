@@ -45,6 +45,8 @@ __Prerequisites__
 
 __*NOTE*__
 
+  0. The dependence to sourcekitd-repl will be deprecated when 2.0's [more controllable interface](https://github.com/jinmingjian/sde/issues/9) coming.   
+
   1. Before trying out, __make sure__ you have got sourcekitdInProc framework/library in your library path. For Linux, use _"swift.sourcekit.linux.sourcekite_ld_library_path"_ to specify other path if it is not in your system library directories.
 
   2. The extension in the marketplace will be rolling-updated in a timed rhythm, such as some weeks. No semantic versioning or backward compatibility guaranteed here. It is better to check the changelog before your update.
@@ -54,10 +56,11 @@ __*NOTE*__
 [Jin Mingjian](mailto:jin.phd@gmail.com): [twitter](https://twitter.com/JinMingjian)
 
 ## FAQ
-* How to get the sourcekitd-repl executable on my Linux?
+* How to get the sourcekitd-repl executable on my Linux? (deprecated soon)
 
-  The best way is that you build the tool youself according to the official documents. And before getting sourcekitd-repl, you should frist build sourcekit library(sourcekitdInProc in Linux). There are some pitfalls from my experience. Linux has many distros. The runtime environments vary much. I use Arch which needs to do some patch to enable the tool sides building. Maybe the easier way is to provide the binaies of tools somewhere. But this is a little brittle for different versions of libraries shipped by different distros. If you like to consume in this way and help to provide some feedbacks, open a new issue and I will help you in that. Some useful tips to build this tools could been seen [this issue](https://github.com/jinmingjian/sde/issues/13).
-  In the meantime, I consider to make a [more controllable interface](https://github.com/jinmingjian/sde/issues/9).    
+  The best way is that you build the tool youself according to the official documents. And before getting sourcekitd-repl, you should frist build sourcekit library(sourcekitdInProc in Linux). There are some pitfalls from my experience. Linux has many distros. The runtime environments vary much. I use Arch which needs to do some patch to enable the tool sides building. Maybe the easier way is to provide the binaies of tools somewhere. But this is a little brittle for different versions of libraries shipped by different distros. If you like to consume in this way and help to provide some feedbacks, open a new issue and I will help you in that.
+  
+  Some useful tips to build this tools could been seen [this issue](https://github.com/jinmingjian/sde/issues/13).
 
 * Why not contribute to the existed projects?
 
