@@ -1,6 +1,10 @@
 Change Log
 ===
 
+2.0.20170206
+---
+* release 2.0 ships a Swift language server backend and a new simple, async, pipe driven language server frontend (issue: #9). This new backend solves the unicode problem of original tool sourcekit-repl. This new frontend improves the code logic and the performance which leave the room for future messaging optimization when needed as well. Futhermore, it is not needed to build whole things from Swift's sources any more.
+
 1.0.20170129
 ---
 * serveral fixs for release 1.x and we want to release great new 2.0

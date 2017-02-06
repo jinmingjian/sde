@@ -110,12 +110,11 @@ const initialConfigurations = {
 }
 
 function initConfig() {
+	checkToolsAvailability()
+
 	workspace.getConfiguration().update('editor.quickSuggestions', false, false)
 	workspace.getConfiguration().update('sde.buildOnSave', true, false)
-	swiftBinPath = workspace.getConfiguration().get('swift.path.swift_driver_bin')
 	// console.log('sde.enableTracing: '+workspace.getConfiguration().get('sde.enableTracing.client'))
-	skProtocolProcess = getSkProtocolProcessPath(
-		extensions.getExtension(PUBLISHER_NAME).extensionPath)
 
 	isTracingOn = <boolean>workspace.getConfiguration().get('sde.enableTracing.client')
 	isLSPServerTracingOn = <boolean>workspace.getConfiguration().get('sde.enableTracing.LSPServer')
@@ -195,3 +194,26 @@ function getSkProtocolProcessPath(extPath: string) {
 	}
 }
 
+function checkToolsAvailability() {
+	swiftBinPath = <string>workspace.getConfiguration().get('swift.path.swift_driver_bin')
+	const sourcekitePath = <string>workspace.getConfiguration().get('swift.path.sourcekite')
+	const shellPath = <string>workspace.getConfiguration().get('swift.path.shell')
+	// const useBuiltInBin = <boolean>workspace.getConfiguration().get('swift.sourcekit.use_built_in_bin')
+	// if (useBuiltInBin) {
+	// 	skProtocolProcess = getSkProtocolProcessPath(
+	// 		extensions.getExtension(PUBLISHER_NAME).extensionPath)
+	// } else {
+		skProtocolProcess = sourcekitePath
+	// }
+
+
+	if (!swiftBinPath || !fs.existsSync(swiftBinPath)) {
+		window.showErrorMessage('missing dependent swift tool, please configure correct "swift.path.swift_driver_bin"')
+	}
+	if (!skProtocolProcess || !fs.existsSync(skProtocolProcess)) {
+		window.showErrorMessage('missing dependent sourcekite tool, please configure correct "swift.path.sourcekite"')
+	}
+	if (!shellPath || !fs.existsSync(shellPath)) {
+		window.showErrorMessage('missing dependent shell tool, please configure correct "swift.path.shell"')
+	}
+}

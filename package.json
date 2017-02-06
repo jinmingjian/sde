@@ -8,7 +8,7 @@
     "url": "https://github.com/jinmingjian"
   },
   "license": "Apache-2.0",
-  "version": "1.0.20170129",
+  "version": "2.0.20170206",
   "publisher": "jinmingjian",
   "icon": "icons/icon.png",
   "galleryBanner": {
@@ -57,10 +57,9 @@
       "type": "object",
       "title": "Swift Development Environment Configuration",
       "properties": {
-        "swift.path.sourcekitd_repl": {
+        "swift.path.sourcekite": {
           "type": "string",
-          "default": "/usr/bin/sourcekitd-repl",
-          "description": "The fully path to the sourcekitd-repl."
+          "description": "The fully path to the sourcekite(SDE's LS backend)."
         },
         "swift.path.swift_driver_bin": {
           "type": "string",
@@ -72,11 +71,6 @@
           "default": "/bin/sh",
           "description": "The fully path to the shell binary."
         },
-        "swift.sourcekit.use_built_in_bin": {
-          "type": "boolean",
-          "default": false,
-          "description": "(Experimental)Use built in binary to talk sourcekitd.(now only for macos)"
-        },
         "sde.enableTracing.client": {
           "type": "boolean",
           "default": false,
@@ -85,18 +79,13 @@
         "sde.enableTracing.LSPServer": {
           "type": "boolean",
           "default": false,
-          "description": "Enable tracing output for SDE LSP server"
+          "description": "Enable tracing output for SDE LS server"
         },
         "swift.diagnosis.max_num_problems": {
           "type": "number",
           "default": 100,
           "description": "Controls the maximum number of problems produced by the server. NOET: Not used now."
-        },
-        "swift.sourcekit.maxBytesAllowedForCodeCompletionResponse": {
-          "type": "number",
-          "default": 262144,
-          "description": "Controls the maximum accepted bytes allowed for every code completion response."
-        }
+        }        
       }
     },
     "breakpoints": [

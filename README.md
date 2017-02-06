@@ -1,9 +1,14 @@
 # Swift Development Environment
 
-[![Build Status](https://travis-ci.org/jinmingjian/sde.svg?branch=master)](https://travis-ci.org/jinmingjian/sde) ![Visual Studio Code Version](https://img.shields.io/badge/Visual%20Studio%20Code-1.8.1-6193DF.svg) ![Swift Version](https://img.shields.io/badge/Swift-3.1.0-orange.svg) [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager) ![Plaforms](https://img.shields.io/badge/Platform-Linux|macOS-lightgrey.svg) ![License Apache](https://img.shields.io/badge/License-Apache%20v2-lightgrey.svg)
+[![Build Status](https://travis-ci.org/jinmingjian/sde.svg?branch=master)](https://travis-ci.org/jinmingjian/sde) ![Visual Studio Code Version](https://img.shields.io/badge/Visual%20Studio%20Code-1.9.0-6193DF.svg) ![Swift Version](https://img.shields.io/badge/Swift-3.1.0-orange.svg) [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager) ![Plaforms](https://img.shields.io/badge/Platform-Linux|macOS-lightgrey.svg) ![License Apache](https://img.shields.io/badge/License-Apache%20v2-lightgrey.svg)
 
 ## Project Broadcast
-The release 2.0 introduces a new interface to sourcekit library. If the release broken your current experience or just you do not like to upgrade, you could do a qucik downgrade like this: 
+The release 2.0 introduces a new tool [sourcekite](https://github.com/jinmingjian/sourcekite) as the interface to sourcekit library. 
+
+Given the Swift's ABI is not stable, you need to build this tool if you want to use SDE. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for further instructions.
+
+
+If the release broken your current experience or just you do not like to upgrade but accidently do a upgrade, you could do a qucik downgrade like this: 
 
 > 1. download the 1.x vsix from [the release page](https://github.com/jinmingjian/sde/releases)
 > 2. remove the installed version in your vscode
@@ -39,17 +44,15 @@ __Installation__
 
 __Prerequisites__
 
-  - This project only depends on official Swift project's [SourceKit](https://github.com/apple/swift/tree/master/tools/SourceKit).
+  - This project only depends on official Swift project's [SourceKit library](https://github.com/apple/swift/tree/master/tools/SourceKit).
 
   - The 2.0+ release of SDE is considering to be built on top of swift 3.1 and vscode 1.8 (typescript 2.0+ for development). You will be notified when these version dependencies are broken. 
 
 __*NOTE*__
 
-  0. The dependence to sourcekitd-repl will be deprecated when 2.0's [more controllable interface](https://github.com/jinmingjian/sde/issues/9) coming.   
+  0. The dependence to sourcekitd-repl has been be deprecated in/after release 2.0.   
 
-  1. Before trying out, __make sure__ you have got sourcekitdInProc framework/library in your library path. For Linux, use _"swift.sourcekit.linux.sourcekite_ld_library_path"_ to specify other path if it is not in your system library directories.
-
-  2. The extension in the marketplace will be rolling-updated in a timed rhythm, such as some weeks. No semantic versioning or backward compatibility guaranteed here. It is better to check the changelog before your update.
+  1. The extension in the marketplace will be rolling-updated in a timed rhythm, such as some weeks. No semantic versioning or backward compatibility guaranteed here. It is better to check the changelog before your update.
 
  
 ## Contributors

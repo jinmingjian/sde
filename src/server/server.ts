@@ -13,8 +13,9 @@ import {
 	Files, FileChangeType
 } from 'vscode-languageserver'
 import * as fs from 'fs'
+import * as sourcekitProtocol from './sourcekites'
 
-const spawn = require('child_process').spawn
+export const spawn = require('child_process').spawn
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
 let connection: IConnection = createConnection(new IPCMessageReader(process), new IPCMessageWriter(process));
@@ -91,9 +92,9 @@ let workspaceRoot: string;
 export let isTracingOn: boolean;
 connection.onInitialize((params: InitializeParams, cancellationToken): InitializeResult => {
 	isTracingOn = params.initializationOptions.isLSPServerTracingOn
-	skProtocolProcess = params.initializationOptions.skProtocolProcess
+	skProtocolPath = params.initializationOptions.skProtocolProcess
 	trace("-->onInitialize ", `isTracingOn=[${isTracingOn}],
-	skProtocolProcess=[${skProtocolProcess}]`)
+	skProtocolProcess=[${skProtocolPath}]`)
 	workspaceRoot = params.rootPath;
 	return {
 		capabilities: {
@@ -126,15 +127,13 @@ interface Settings {
 
 
 //external
-let sdeSettings: any;
-export let repl = null;
+export let sdeSettings: any;
 export let swiftDiverBinPath: string = null;
 export let maxBytesAllowedForCodeCompletionResponse: number = 0;
 //internal
-let skProtocolProcess = null
+export let skProtocolPath = null
 let maxNumProblems = null
 let shellPath = null
-let useBuiltInBin: boolean = false
 // The settings have changed. Is send on server activation
 // as well.
 connection.onDidChangeConfiguration((change) => {
@@ -142,22 +141,17 @@ connection.onDidChangeConfiguration((change) => {
 	const settings = <Settings>change.settings
 	sdeSettings = settings.swift;//FIXME configs only accessed via the language id?
 
+    //FIXME does LS client support on-the-fly change?
 	maxNumProblems = sdeSettings.diagnosis.max_num_problems
 	swiftDiverBinPath = sdeSettings.path.swift_driver_bin
 	shellPath = sdeSettings.path.shell
-	useBuiltInBin = sdeSettings.sourcekit.use_built_in_bin
 
 	trace(`-->onDidChangeConfiguration tracing: 
 	    swiftDiverBinPath=[${swiftDiverBinPath}],
-		shellPath=[${shellPath}],
-		useBuiltInBin=[${useBuiltInBin}]`)
+		shellPath=[${shellPath}]`)
 
-	maxBytesAllowedForCodeCompletionResponse =
-		sdeSettings.sourcekit.maxBytesAllowedForCodeCompletionResponse
-	//FIXME reconfigure when configs haved  
-	if (repl == null) {
-		initializeReplProcess()
-	}
+	//FIXME reconfigure when configs haved
+	sourcekitProtocol.initializeSourcekite()  
 	if (!allModuleSources) {//FIXME oneshot?
 		initializeModuleMeta()
 	}
@@ -165,36 +159,7 @@ connection.onDidChangeConfiguration((change) => {
 	documents.all().forEach(validateTextDocument);
 });
 
-function initializeReplProcess() {
-	trace(`***sourcekitd_repl initializing wit 
-	skProtocolProcess=[${skProtocolProcess}],
-	sdeSettings.path.sourcekitd_repl=[${sdeSettings.path.sourcekitd_repl}]`)
-	repl = useBuiltInBin ?
-		spawn(skProtocolProcess) :
-		spawn(sdeSettings.path.sourcekitd_repl)
-	repl.stderr.on('data', (data) => {
-		if (isTracingOn) {
-			trace('***stderr***', '' + data)
-		}
-	})
-	repl.on('exit', function (code, signal) {
-		trace('***sourcekitd_repl exited***', `code: ${code}, signal: ${signal}`)
-		trace('***sourcekitd_repl exited***', 'to spawn a new sourcekitd_repl process')
-		repl = useBuiltInBin ?
-			spawn(skProtocolProcess) :
-			spawn(sdeSettings.path.sourcekitd_repl)
-	})
-	repl.on('error', function (err) {
-		trace('***sourcekitd_repl error***', (<Error>err).message)
-		if ((<Error>err).message.indexOf("ENOENT") > 0) {
-			const msg = "The '" + sdeSettings.path.sourcekitd_repl +
-				"' command is not available." +
-				" Please check your swift executable user setting and ensure it is installed.";
-			trace('***sourcekitd_repl not found***', msg)
-		}
-		throw err//FIXME more friendly prompt
-	});
-}
+
 
 function validateTextDocument(textDocument: TextDocument): void {
 	// let diagnostics: Diagnostic[] = [];
@@ -255,13 +220,13 @@ connection.onDidChangeWatchedFiles((watched) => {
 	})
 });
 
-import * as sourcekitProtocol from './SourceKitProtocols';
+
 // This handler provides the initial list of the completion items.
 connection.onCompletion(({textDocument, position}): Thenable<CompletionItem[]> => {
-	const document: TextDocument = documents.get(textDocument.uri);
-	const srcPath = document.uri.substring(7, document.uri.length);
-	const srcText: string = document.getText();//NOTE needs on-the-fly buffer
-	const offset = document.offsetAt(position);//FIXME
+	const document: TextDocument = documents.get(textDocument.uri)
+	const srcPath = document.uri.substring(7, document.uri.length)
+	const srcText: string = document.getText() //NOTE needs on-the-fly buffer
+	const offset = document.offsetAt(position) //FIXME
 	return sourcekitProtocol
 		.codeComplete(srcText, srcPath, offset)
 		.then(function (completions) {
@@ -272,12 +237,12 @@ connection.onCompletion(({textDocument, position}): Thenable<CompletionItem[]> =
 				item.detail = `${c["key.modulename"]}.${c["key.name"]}`
 				item.insertText = createSuggest(c["key.sourcetext"])
 				item.insertTextFormat = InsertTextFormat.Snippet
-				items.push(item);
+				items.push(item)
 			}
-			return items;
+			return items
 		}, function (err) {
 			//FIXME
-			return err;
+			return err
 		});
 });
 
