@@ -7,6 +7,8 @@ The release 2.0 introduces a new tool [sourcekite](https://github.com/jinmingjia
 
 Given the Swift's ABI is not stable, you need to build this tool if you want to use SDE. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for further instructions.
 
+TIPS: still given the Swift's ABI is not stable, you may find the hover help or code completion do not show right infos as before after you upgrade the Swift toolchain. This is because the SourceKit library you linked with the [sourcekite](https://github.com/jinmingjian/sourcekite) tool can not understand the sources/binaries of your project. Rebuild your project and restart vscode.
+
 
 If the release broken your current experience or just you do not like to upgrade but accidently do a upgrade, you could do a qucik downgrade like this: 
 
