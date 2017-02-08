@@ -48,7 +48,7 @@ __Prerequisites__
 
   - This project only depends on its companion project [sourcekite](https://github.com/jinmingjian/sourcekite), which only depends on official Swift and its tool project [SourceKit library](https://github.com/apple/swift/tree/master/tools/SourceKit) transitively. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more infos.
 
-  - The 2.0+ release of SDE is considering to be built on top of swift 3.1 and vscode 1.8 (typescript 2.0+ for development). You will be notified when these version dependencies are broken. 
+  - from release 2.0,  SDE is considering to base on top of swift 3.1 and vscode 1.8 (typescript 2.0 for development). You will be notified when these version dependencies are broken. (NOTE: Swift 3.1 is intended to be source compatible with Swift 3, so you can develop with SDE and release with 3.0)
 
 __*NOTE*__
 
