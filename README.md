@@ -46,7 +46,7 @@ __Installation__
 
 __Prerequisites__
 
-  - This project only depends on official Swift project's [SourceKit library](https://github.com/apple/swift/tree/master/tools/SourceKit).
+  - This project only depends on its companion project [sourcekite](https://github.com/jinmingjian/sourcekite), which only depends on official Swift and its tool project [SourceKit library](https://github.com/apple/swift/tree/master/tools/SourceKit) transitively. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more infos.
 
   - The 2.0+ release of SDE is considering to be built on top of swift 3.1 and vscode 1.8 (typescript 2.0+ for development). You will be notified when these version dependencies are broken. 
 
@@ -61,11 +61,6 @@ __*NOTE*__
 [Jin Mingjian](mailto:jin.phd@gmail.com): [twitter](https://twitter.com/JinMingjian)
 
 ## FAQ
-* How to get the sourcekitd-repl executable on my Linux? (deprecated soon)
-
-  The best way is that you build the tool youself according to the official documents. And before getting sourcekitd-repl, you should frist build sourcekit library(sourcekitdInProc in Linux). There are some pitfalls from my experience. Linux has many distros. The runtime environments vary much. I use Arch which needs to do some patch to enable the tool sides building. Maybe the easier way is to provide the binaies of tools somewhere. But this is a little brittle for different versions of libraries shipped by different distros. If you like to consume in this way and help to provide some feedbacks, open a new issue and I will help you in that.
-  
-  Some useful tips to build this tools could been seen [this issue](https://github.com/jinmingjian/sde/issues/13).
 
 * Why not contribute to the existed projects?
 
