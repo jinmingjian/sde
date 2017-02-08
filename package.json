@@ -8,7 +8,7 @@
     "url": "https://github.com/jinmingjian"
   },
   "license": "Apache-2.0",
-  "version": "2.0.20170206",
+  "version": "2.0.20170208",
   "publisher": "jinmingjian",
   "icon": "icons/icon.png",
   "galleryBanner": {
@@ -61,6 +61,11 @@
           "type": "string",
           "description": "The fully path to the sourcekite(SDE's LS backend)."
         },
+        "swift.path.sourcekiteDockerMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "(Experimental)Enable to run dedicated docker shell command. It is the responsibility of user to guarantee that the docker cmd 'docker run --rm -i jinmingjian/docker-sourcekite' works in your system."
+        },
         "swift.path.swift_driver_bin": {
           "type": "string",
           "default": "/usr/bin/swift",
@@ -85,7 +90,7 @@
           "type": "number",
           "default": 100,
           "description": "Controls the maximum number of problems produced by the server. NOET: Not used now."
-        }        
+        }
       }
     },
     "breakpoints": [

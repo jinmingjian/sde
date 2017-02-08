@@ -20,6 +20,7 @@ const PUBLISHER_NAME = "jinmingjian.sde"
 let swiftBinPath = null
 let swiftPackageManifestPath = null
 let skProtocolProcess = null
+let skProtocolProcessAsShellCmd = null
 export let isTracingOn: boolean = false
 export let isLSPServerTracingOn: boolean = false
 export let diagnosticCollection: DiagnosticCollection
@@ -51,7 +52,8 @@ export function activate(context: ExtensionContext) {
 		},
 		initializationOptions: {
 			'isLSPServerTracingOn': isLSPServerTracingOn,
-			'skProtocolProcess': skProtocolProcess
+			'skProtocolProcess': skProtocolProcess,
+			'skProtocolProcessAsShellCmd': skProtocolProcessAsShellCmd
 		},
 	}
 
@@ -185,33 +187,37 @@ export function dumpInConsole(msg: string) {
 	spmChannel.append(msg)
 }
 
-function getSkProtocolProcessPath(extPath: string) {
-	switch (os.platform()) {
-		case 'darwin':
-			return path.join(extPath, "bin", "macos", 'sourcekitd-repl')
-		default://FIXME
-			return path.join(extPath, "bin", "linux", 'sourcekitd-repl')
-	}
-}
+// function getSkProtocolProcessPath(extPath: string) {
+// 	switch (os.platform()) {
+// 		case 'darwin':
+// 			return path.join(extPath, "bin", "macos", 'sourcekitd-repl')
+// 		default://FIXME
+// 			return path.join(extPath, "bin", "linux", 'sourcekitd-repl')
+// 	}
+// }
 
 function checkToolsAvailability() {
 	swiftBinPath = <string>workspace.getConfiguration().get('swift.path.swift_driver_bin')
 	const sourcekitePath = <string>workspace.getConfiguration().get('swift.path.sourcekite')
+	const sourcekitePathEnableShCmd = <string>workspace.getConfiguration().get('swift.path.sourcekiteDockerMode')
 	const shellPath = <string>workspace.getConfiguration().get('swift.path.shell')
 	// const useBuiltInBin = <boolean>workspace.getConfiguration().get('swift.sourcekit.use_built_in_bin')
 	// if (useBuiltInBin) {
 	// 	skProtocolProcess = getSkProtocolProcessPath(
 	// 		extensions.getExtension(PUBLISHER_NAME).extensionPath)
 	// } else {
-		skProtocolProcess = sourcekitePath
+	skProtocolProcess = sourcekitePath
+	skProtocolProcessAsShellCmd = sourcekitePathEnableShCmd
 	// }
 
 
 	if (!swiftBinPath || !fs.existsSync(swiftBinPath)) {
 		window.showErrorMessage('missing dependent swift tool, please configure correct "swift.path.swift_driver_bin"')
 	}
-	if (!skProtocolProcess || !fs.existsSync(skProtocolProcess)) {
-		window.showErrorMessage('missing dependent sourcekite tool, please configure correct "swift.path.sourcekite"')
+	if (!sourcekitePathEnableShCmd) {
+		if (!skProtocolProcess || !fs.existsSync(skProtocolProcess)) {
+			window.showErrorMessage('missing dependent sourcekite tool, please configure correct "swift.path.sourcekite"')
+		}
 	}
 	if (!shellPath || !fs.existsSync(shellPath)) {
 		window.showErrorMessage('missing dependent shell tool, please configure correct "swift.path.shell"')

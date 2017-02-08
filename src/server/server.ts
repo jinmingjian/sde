@@ -88,14 +88,15 @@ export function getAllSourcePaths(srcPath: string): string[] {
 
 // After the server has started the client sends an initilize request. The server receives
 // in the passed params the rootPath of the workspace plus the client capabilites. 
-let workspaceRoot: string;
+export let workspaceRoot: string;
 export let isTracingOn: boolean;
 connection.onInitialize((params: InitializeParams, cancellationToken): InitializeResult => {
 	isTracingOn = params.initializationOptions.isLSPServerTracingOn
 	skProtocolPath = params.initializationOptions.skProtocolProcess
+	skProtocolProcessAsShellCmd = params.initializationOptions.skProtocolProcessAsShellCmd
 	trace("-->onInitialize ", `isTracingOn=[${isTracingOn}],
-	skProtocolProcess=[${skProtocolPath}]`)
-	workspaceRoot = params.rootPath;
+	skProtocolProcess=[${skProtocolPath}],skProtocolProcessAsShellCmd=[${skProtocolProcessAsShellCmd}]`)
+	workspaceRoot = params.rootPath
 	return {
 		capabilities: {
 			// Tell the client that the server works in FULL text document sync mode
@@ -132,6 +133,7 @@ export let swiftDiverBinPath: string = null;
 export let maxBytesAllowedForCodeCompletionResponse: number = 0;
 //internal
 export let skProtocolPath = null
+export let skProtocolProcessAsShellCmd = false
 let maxNumProblems = null
 let shellPath = null
 // The settings have changed. Is send on server activation
@@ -141,7 +143,7 @@ connection.onDidChangeConfiguration((change) => {
 	const settings = <Settings>change.settings
 	sdeSettings = settings.swift;//FIXME configs only accessed via the language id?
 
-    //FIXME does LS client support on-the-fly change?
+	//FIXME does LS client support on-the-fly change?
 	maxNumProblems = sdeSettings.diagnosis.max_num_problems
 	swiftDiverBinPath = sdeSettings.path.swift_driver_bin
 	shellPath = sdeSettings.path.shell
@@ -151,7 +153,7 @@ connection.onDidChangeConfiguration((change) => {
 		shellPath=[${shellPath}]`)
 
 	//FIXME reconfigure when configs haved
-	sourcekitProtocol.initializeSourcekite()  
+	sourcekitProtocol.initializeSourcekite()
 	if (!allModuleSources) {//FIXME oneshot?
 		initializeModuleMeta()
 	}
@@ -498,7 +500,7 @@ function decode(str) {
 }
 
 //FIX issue#15
-function getShellExecPath() {
+export function getShellExecPath() {
 	return fs.existsSync(shellPath) ? shellPath : "/usr/bin/sh"
 }
 /**

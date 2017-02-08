@@ -16,12 +16,20 @@ export function initializeSourcekite() {
     }
 }
 
+function createSkProtocolProcess() {
+    if (server.skProtocolProcessAsShellCmd) {
+        return server.spawn(server.getShellExecPath(), ["-c", `docker run --rm -v ${server.workspaceRoot}:${server.workspaceRoot} -i jinmingjian/docker-sourcekite`])
+    } else {
+        return server.spawn(server.skProtocolPath)
+    }
+}
+
 function initializeSKProtocolProcess() {
     debugLog(`***sourcekite initializing with skProtocolProcess at [${server.skProtocolPath}]`)
 
     const pathSourcekite = server.sdeSettings.path.sourcekite
 
-    skProtocolProcess = server.spawn(server.skProtocolPath)
+    skProtocolProcess = createSkProtocolProcess()
     skProtocolProcess.stderr.on('data', (data) => {
         if (server.isTracingOn) {
             debugLog('***stderr***' + data)
@@ -31,7 +39,7 @@ function initializeSKProtocolProcess() {
         debugLog('***sourcekite exited***' + `code: ${code}, signal: ${signal}`)
         debugLog('***sourcekite exited***' + 'to spawn a new sourcekite process')
         //NOTE this is not guaranteed to reboot, but we just want it 'not guaranteed'
-        skProtocolProcess = server.spawn(server.skProtocolPath)
+        skProtocolProcess = createSkProtocolProcess()
     })
     skProtocolProcess.on('error', function (err) {
         debugLog('***sourcekitd_repl error***' + (<Error>err).message)
