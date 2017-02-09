@@ -61,6 +61,8 @@ __*NOTE*__
 [Jin Mingjian](mailto:jin.phd@gmail.com): [twitter](https://twitter.com/JinMingjian)
 
 ## FAQ
+* Is it possible to use SDE if I can not build sourcekite in my Linux in that absence of sourcekit library?
+  Generally we should wait the sourcekit libray to be included in the official download. From 2.0.20170209, SDE makes a sourcekite docker image and adds a new experimental setting "swift.path.sourcekiteDockerMode" for easier adoption for Linux users. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more infos.
 
 * Why not contribute to the existed projects?
 

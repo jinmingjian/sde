@@ -1,6 +1,10 @@
 Change Log
 ===
 
+2.0.20170209
+---
+* make a sourcekite docker image and add a new experimental setting "swift.path.sourcekiteDockerMode" for easier adoption for Linux users (issue: #26) (MacOS users do not need to update to this version in that there is no other additions in this version)
+
 2.0.20170206
 ---
 * release 2.0 ships a Swift language server backend and a new simple, async, pipe driven language server frontend (issue: #9). This new backend solves the unicode problem of original tool sourcekit-repl. This new frontend improves the code logic and the performance which leave the room for future messaging optimization when needed as well. Futhermore, it is not needed to build whole things from Swift's sources any more.
