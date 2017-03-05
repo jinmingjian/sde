@@ -2,89 +2,98 @@
 
 [![Build Status](https://travis-ci.org/jinmingjian/sde.svg?branch=master)](https://travis-ci.org/jinmingjian/sde) ![Visual Studio Code Version](https://img.shields.io/badge/Visual%20Studio%20Code-1.9.0-6193DF.svg) ![Swift Version](https://img.shields.io/badge/Swift-3.1.0-orange.svg) [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager) ![Plaforms](https://img.shields.io/badge/Platform-Linux|macOS-lightgrey.svg) ![License Apache](https://img.shields.io/badge/License-Apache%20v2-lightgrey.svg)
 
-## Project Broadcast
-The release 2.0 introduces a new tool [sourcekite](https://github.com/jinmingjian/sourcekite) as the interface to sourcekit library. 
+## 2.0 Release Broadcast
+The `2.0` release introduces a new tool, [SourceKite](https://github.com/jinmingjian/sourcekite), as the interface to **SourceKit** library. Since the Swift `ABI` is not stable, you need to build it if you want to use SDE. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for further instructions.
 
-Given the Swift's ABI is not stable, you need to build this tool if you want to use SDE. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for further instructions.
+Also because the Swift ABI **is not stable**, you may find that the _Hover Help_ or the _Code Completion_ don't display the right information after you upgrade your Swift toolchain. This is because the SourceKit library you linked with the [SourceKite](https://github.com/jinmingjian/sourcekite) tool can't understand the sources or binaries of your project. To fix this, **rebuild your project** and **restart vscode**.
 
-TIPS: still given the Swift's ABI is not stable, you may find the hover help or code completion do not show right infos as before after you upgrade the Swift toolchain. This is because the SourceKit library you linked with the [sourcekite](https://github.com/jinmingjian/sourcekite) tool can not understand the sources/binaries of your project. Rebuild your project and restart vscode.
+#### Want to downgrade?
+If the release broke your current experience or if you accidentally upgraded, you can go back to the previous releases like this: 
 
+1. Download the 1.x vsix from [the release page](https://github.com/jinmingjian/sde/releases)
+2. Remove the installed version in your vscode
+3. Install the local `.vsix` package in your vscode
 
-If the release broken your current experience or just you do not like to upgrade but accidently do a upgrade, you could do a qucik downgrade like this: 
-
-> 1. download the 1.x vsix from [the release page](https://github.com/jinmingjian/sde/releases)
-> 2. remove the installed version in your vscode
-> 3. install the local .vsix package in your vscode
-
-History changes can be seen in [CHANGELOG](CHANGELOG.md).
+#### Version history
+Can be seen in [CHANGELOG](CHANGELOG.md).
 
 ## Quick Preview
 ![preview](docs/preview.gif)
 
-You can read a [hands-on introduction](http://blog.dirac.io/2017/01/11/get_started_sde.html) for a detail explanation.
+You can read a [hands-on introduction](http://blog.dirac.io/2017/01/11/get_started_sde.html) for a detailed explanation.
 
-## Status
-The project focuses on making the below features solid:
-* code completion
-* formatting
-* error diagnostic
-* debugging
-* navigation/hyperlinking
-* hover help
+## Project Status
+The project focuses on making the following features solid:
+* Code completion
+* Formatting
+* Error diagnosis
+* Debugging
+* Navigation/hyperlinking
+* Hover help
 * SPM support/preferences/tools
 
-More the big picture could be seen in [the wiki](https://github.com/jinmingjian/sde/wiki)
+Read more of the big picture in [the wiki](https://github.com/jinmingjian/sde/wiki)
 
-The initial goal of this project is to give myself a joyful Swift coding experience in Linux. But with the help of community, the macOS support is equivalent to that of Linux. Hope it could already drive you to start a joyful coding experience for server side Swift at Linux and macOS.(Or you like to try it on Windows 10 WSL)
+The initial goal of this project was to give myself a joyful Swift coding experience in Linux. But with the help of community, the macOS support has become as strong as it is in Linux. I hope it can drive you to start a joyful coding experience for server side Swift at Linux and macOS. *(Or if you like, try it on Windows 10 WSL)*
 
-The current work of project are done in the free time of the author for his love to swift@linux. So, it is best to make limited resources to focus on the most important functionalities. However, always welcome to provide your ideas.  
+The current work for this project is done in the free time of the author for his love to **swift@linux**. Therefore, it is best _(at the moment)_ to focus the limited resources on the most important functionalities. That said, your ideas are always welcome. 
 
 ## Usage
-__Installation__
 
-  - Just search "sde" and install from your vscode's Extensions view.
+### Installation
 
-__Prerequisites__
+  - Just search "sde" and install from your vscode's _Extensions_ view.
 
-  - This project only depends on its companion project [sourcekite](https://github.com/jinmingjian/sourcekite), which only depends on official Swift and its tool project [SourceKit library](https://github.com/apple/swift/tree/master/tools/SourceKit) transitively. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more infos.
+### Prerequisites
 
-  - from release 2.0,  SDE is considering to base on top of swift 3.1 and vscode 1.8 (typescript 2.0 for development). You will be notified when these version dependencies are broken. (NOTE: Swift 3.1 is intended to be source compatible with Swift 3, so you can develop with SDE and release with 3.0)
+  - This project only depends on its companion project [sourcekite](https://github.com/jinmingjian/sourcekite), which transitively depends on the official Swift codebase and its companion-tool project [SourceKit library](https://github.com/apple/swift/tree/master/tools/SourceKit). Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more information.
 
-__*NOTE*__
+  - Starting from 2.0, SDE is based on top of **Swift 3.1** and **vscode 1.8** (typescript 2.0 for development). You will be notified when these version dependencies are broken. _(**NOTE:** Swift 3.1 is intended to be source compatible with Swift 3, so you can develop with SDE and release with 3.0)_
 
-  0. The dependence to sourcekitd-repl has been be deprecated in/after release 2.0.   
+### Other information
 
-  1. The extension in the marketplace will be rolling-updated in a timed rhythm, such as some weeks. No semantic versioning or backward compatibility guaranteed here. It is better to check the changelog before your update.
+1. The dependence to `sourcekitd-repl` has been deprecated starting from release 2.0.   
 
- 
+  1. The extension in the marketplace will be rolling-updated in a timed rhythm, such as some weeks. Also, there is no semantic versioning or backward compatibility guaranteed yet. It is better to check the changelog before your update.
+
 ## Contributors
 [Jin Mingjian](mailto:jin.phd@gmail.com): [twitter](https://twitter.com/JinMingjian)
 
 ## FAQ
-* Is it possible to use SDE if I can not build sourcekite in my Linux in that absence of sourcekit library?
-  Generally we should wait the sourcekit libray to be included in the official download. From 2.0.20170209, SDE makes a sourcekite docker image and adds a new experimental setting "swift.path.sourcekiteDockerMode" for easier adoption for Linux users. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more infos.
 
-* Why not contribute to the existed projects?
+### Is it possible to use SDE if I can't build sourcekite in my Linux setup, in absence of sourcekit library?
 
-  Current such works are all naive to attract linux/backend users to embrace concise and elegant Swift. I am watching the communities of vscode and Swift to provide the best experience at my best. I also highly suggest the work of community(vscode+SwiftLang) should be joint. But I hope we can be in the right way. 
+Strictly speaking, we should wait for the sourcekit library to be included in the official download. From _2.0.20170209_ though, SDE makes a sourcekite docker image and adds a new experimental setting `"swift.path.sourcekiteDockerMode"` for easier adoption for Linux users. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more information.
 
-* How to contribute to this project?
+### Why don't you contribute to the existing projects?
 
-  Any feedback contributes its help.
+Current such works are all naïve to attract linux/backend users to embrace concise and elegant Swift. I am watching the communities of vscode and Swift to provide the best experience with my best effort. 
 
-  If you are saying about contributions to the sources, this is truely another topic. The experience to use an editor is much different to that of developing for an editor. There may be a little more pain than that you think. But if you like to start, welcome! 
+I also highly suggest the work of community (vscode & SwiftLang) should be joint. But I hope we can all be in good terms. 
 
-  There are not too much documents about developing the project. If you have any question or interest, don't hesitate to file a issue(better than a private email). I will help you, then drop more readings gradually. This is the way of "open source". 
+### How to contribute to this project?
 
-* Why can not debug my executable which built by SPM in my Linux?
+Any feedback helps.
+
+If you mean contributions to the **sources**, this is truely another topic. The experience of **_using_** an editor is much different than that of **_developing_** one. It might be a bit more painful than you think. But if you would like to, welcome! 
+
+There aren't too much documents about the development of this project. If you have any questions or interests, don't hesitate to file an issue _(better than a private email)_. I will help you and then drop more readings as time goes by. This is **_the way of "open source"_**. 
+
+### Why can't I debug my executable, built by SPM in my Linux installation?
    
-  Watch [this SR](https://bugs.swift.org/browse/SR-3280) for more and then you would be easy to dig out some workaround although there are still other problems.
+Watch [this SR](https://bugs.swift.org/browse/SR-3280) for more and then you would be easy to dig out some workaround although there are still other problems.
 
-* It seems diagnostic infos are only available after building?
+### It seems diagnostic info is not available at all?
+
+Did you build your project yet? Try it. Then, you can see below for a detailed explanation.
+
+### It seems diagnostic infos are only available after building?
   
-  Yes. Not only the diagnostic infos, the current design and implementations are convention-based, like SPM itself. This is still far from the perfect. However, it is enough for many cases although not flexible for covering 100%. There are many reasons for this, such as, limited development resources, bugs in Sourcekit tools or the lacks of understanding to current Sourcekit protocol. I'd like to continue to improve the experience.
+Yes. Not only the diagnostic infos, the current design and implementations are convention-based, like SPM itself. This is still far from the perfect. However, it is enough for many cases although not flexible for covering 100%. There are many reasons for this, such as, limited development resources, bugs in Sourcekit tools or the lacks of understanding to current Sourcekit protocol. I'd like to continue to improve the experience.
 
-## [More issues](https://github.com/jinmingjian/sde/issues)
+## Other questions?
+
+If so, file an [issue](https://github.com/jinmingjian/sde/issues), please :)
 
 ## License
 Apache License v2.
