@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/jinmingjian/sde.svg?branch=master)](https://travis-ci.org/jinmingjian/sde) ![Visual Studio Code Version](https://img.shields.io/badge/Visual%20Studio%20Code-1.9.0-6193DF.svg) ![Swift Version](https://img.shields.io/badge/Swift-3.1.0-orange.svg) [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager) ![Plaforms](https://img.shields.io/badge/Platform-Linux|macOS-lightgrey.svg) ![License Apache](https://img.shields.io/badge/License-Apache%20v2-lightgrey.svg)
 
 ## 2.0 Release Broadcast
-The `2.0` release introduces a new tool, [SourceKite](https://github.com/jinmingjian/sourcekite), as the interface to **SourceKit** library. Since the Swift `ABI` is not stable, you need to build it if you want to use SDE. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for further instructions.
+The `2.0` release introduces a new tool, [SourceKite](https://github.com/jinmingjian/sourcekite), as the interface to **SourceKit** library. Since the Swift `ABI` is not stable, you need to build it if you want to use SDE. Go to [SourceKite](https://github.com/jinmingjian/sourcekite) for further instructions.
 
 Also because the Swift ABI **is not stable**, you may find that the _Hover Help_ or the _Code Completion_ don't display the right information after you upgrade your Swift toolchain. This is because the SourceKit library you linked with the [SourceKite](https://github.com/jinmingjian/sourcekite) tool can't understand the sources or binaries of your project. To fix this, **rebuild your project** and **restart vscode**.
 
@@ -63,7 +63,7 @@ The current work for this project is done in the free time of the author for his
 
 ### Is it possible to use SDE if I can't build sourcekite in my Linux setup, in absence of sourcekit library?
 
-Strictly speaking, we should wait for the sourcekit library to be included in the official download. From _2.0.20170209_ though, SDE makes a sourcekite docker image and adds a new experimental setting `"swift.path.sourcekiteDockerMode"` for easier adoption for Linux users. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more information.
+Strictly speaking, we should wait for the sourcekit library to be included in the official download. From _2.0.20170209_ though, SDE makes a sourcekite docker image and adds a new experimental setting `swift.path.sourcekiteDockerMode` for easier adoption for Linux users. Go to [sourcekite](https://github.com/jinmingjian/sourcekite) for more information.
 
 ### Why don't you contribute to the existing projects?
 
