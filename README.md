@@ -59,6 +59,8 @@ The current work for this project is done in the free time of the author for his
 ## Contributors
 [Jin Mingjian](mailto:jin.phd@gmail.com): [twitter](https://twitter.com/JinMingjian)
 
+Felix Fischer: [twitter](https://twitter.com/FelixFischer91), [github](https://github.com/felix91gr)
+
 ## FAQ
 
 ### Is it possible to use SDE if I can't build sourcekite in my Linux setup, in absence of sourcekit library?
