@@ -21,7 +21,7 @@ export function buildPackage(swiftBinPath: string, pkgPath: string, options: str
     stdout = null
     stderr = null
     error = null
-    const sb = cp.spawn(swiftBinPath, ["build"], { cwd: pkgPath });
+    const sb = cp.spawn(swiftBinPath, ["build", "--build-tests"], { cwd: pkgPath });
     sb.stdout.on('data', (data) => {
         stdout += data
         dumpInConsole("" + data)
