@@ -14,7 +14,7 @@ import {
 } from 'vscode-languageserver'
 import * as fs from 'fs'
 import * as sourcekitProtocol from './sourcekites'
-import { Uri } from 'vscode'
+import Uri from 'vscode-uri'
 import { isWsl, winPath, wslPath } from '../WslUtil'
 
 export const spawn = require('child_process').spawn
