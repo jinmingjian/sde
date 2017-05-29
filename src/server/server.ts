@@ -14,8 +14,8 @@ import {
 } from 'vscode-languageserver'
 import * as fs from 'fs'
 import * as sourcekitProtocol from './sourcekites'
-import Uri from 'vscode-uri'
-import { isWsl, wslPath } from '../WslUtil'
+import { Uri } from 'vscode'
+import { isWsl, winPath, wslPath } from '../WslUtil'
 
 export const spawn = require('child_process').spawn
 
@@ -342,7 +342,7 @@ function toCompletionItemKind(keyKind: string): CompletionItemKind {
 
 connection.onHover(({textDocument, position}): Promise<Hover> => {
 	const document: TextDocument = documents.get(textDocument.uri);
-	var srcPath = fromDocumentUri(document);
+	const srcPath = fromDocumentUri(document);
 	const srcText: string = document.getText();//NOTE needs on-the-fly buffer
 	const offset = document.offsetAt(position);//FIXME
 	return sourcekitProtocol
@@ -408,11 +408,12 @@ connection.onDefinition(({textDocument, position}): Promise<Definition> => {
 	return sourcekitProtocol
 		.cursorInfo(srcText, srcPath, offset)
 		.then(function (cursorInfo) {
-			const filepath = cursorInfo['key.filepath']
+			let filepath = cursorInfo['key.filepath']
 			if (filepath) {
+				if (isWsl) filepath = winPath(filepath)
 				const offset = cursorInfo['key.offset']
 				const len = cursorInfo['key.length']
-				const fileUri = `file://${filepath}`
+				const fileUri = Uri.file(filepath).toString()
 				let document: TextDocument = documents.get(fileUri);//FIXME
 				//FIXME more here: https://github.com/Microsoft/language-server-protocol/issues/96
 				if (!document) {//FIXME just make a temp doc to let vscode help us

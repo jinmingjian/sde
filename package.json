@@ -147,7 +147,6 @@
     "vscode-debugadapter": "^1.15.0",
     "vscode-debugprotocol": "^1.15.0",
     "vscode-languageclient": "^3.0.2-beta.5",
-    "vscode-languageserver": "^3.0.2-beta.5",
-    "vscode-uri": "^1.0.0"
+    "vscode-languageserver": "^3.0.2-beta.5"
   }
 }
