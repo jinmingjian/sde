@@ -13,10 +13,12 @@ import {
 	LanguageClient, LanguageClientOptions,
 	SettingMonitor, ServerOptions, TransportKind
 } from 'vscode-languageclient';
+import { isWsl, winPath } from './WslUtil'
 
 const LENGTH_PKG_FILE_NAME: number = "Package.swift".length
 const PUBLISHER_NAME = "jinmingjian.sde"
 
+let shellPath = null
 let swiftBinPath = null
 let swiftPackageManifestPath = null
 let skProtocolProcess = null
@@ -75,6 +77,7 @@ export function activate(context: ExtensionContext) {
 
 			makeBuildStatusStarted()
 			tools.buildPackage(
+				shellPath,
 				swiftBinPath,
 				workspace.rootPath,
 				null)
@@ -200,7 +203,7 @@ function checkToolsAvailability() {
 	swiftBinPath = <string>workspace.getConfiguration().get('swift.path.swift_driver_bin')
 	const sourcekitePath = <string>workspace.getConfiguration().get('swift.path.sourcekite')
 	const sourcekitePathEnableShCmd = <string>workspace.getConfiguration().get('swift.path.sourcekiteDockerMode')
-	const shellPath = <string>workspace.getConfiguration().get('swift.path.shell')
+	shellPath = <string>workspace.getConfiguration().get('swift.path.shell')
 	// const useBuiltInBin = <boolean>workspace.getConfiguration().get('swift.sourcekit.use_built_in_bin')
 	// if (useBuiltInBin) {
 	// 	skProtocolProcess = getSkProtocolProcessPath(
@@ -211,11 +214,11 @@ function checkToolsAvailability() {
 	// }
 
 
-	if (!swiftBinPath || !fs.existsSync(swiftBinPath)) {
+	if (!swiftBinPath || !fs.existsSync(isWsl ? winPath(swiftBinPath) : swiftBinPath)) {
 		window.showErrorMessage('missing dependent swift tool, please configure correct "swift.path.swift_driver_bin"')
 	}
 	if (!sourcekitePathEnableShCmd) {
-		if (!skProtocolProcess || !fs.existsSync(skProtocolProcess)) {
+		if (!skProtocolProcess || !fs.existsSync(isWsl ? winPath(skProtocolProcess) : skProtocolProcess)) {
 			window.showErrorMessage('missing dependent sourcekite tool, please configure correct "swift.path.sourcekite"')
 		}
 	}
