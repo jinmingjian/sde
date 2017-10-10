@@ -1,6 +1,10 @@
 Change Log
 ===
 
+Next version
+---
+* basic support for Swift 4. (issue #38)
+
 2.0.20170209
 ---
 * make a sourcekite docker image and add a new experimental setting "swift.path.sourcekiteDockerMode" for easier adoption for Linux users (issue: #26) (MacOS users do not need to update to this version in that there is no other additions in this version)
