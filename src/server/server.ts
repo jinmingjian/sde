@@ -44,7 +44,7 @@ export function initializeModuleMeta() {
 		}
 		//TODO more here
 		const pkgDesc = JSON.parse(data)
-		for (const m of <Object[]>pkgDesc['modules']) {
+		for (const m of <Object[]>pkgDesc['modules'] || pkgDesc['targets']) {
 			const mn = m['name']
 			const mp = m['path']
 			const ss = <string[]>m['sources']
@@ -87,7 +87,7 @@ export function getAllSourcePaths(srcPath: string): string[] {
 }
 
 // After the server has started the client sends an initilize request. The server receives
-// in the passed params the rootPath of the workspace plus the client capabilites. 
+// in the passed params the rootPath of the workspace plus the client capabilites.
 export let workspaceRoot: string;
 export let isTracingOn: boolean;
 connection.onInitialize((params: InitializeParams, cancellationToken): InitializeResult => {
@@ -148,7 +148,7 @@ connection.onDidChangeConfiguration((change) => {
 	swiftDiverBinPath = sdeSettings.path.swift_driver_bin
 	shellPath = sdeSettings.path.shell
 
-	trace(`-->onDidChangeConfiguration tracing: 
+	trace(`-->onDidChangeConfiguration tracing:
 	    swiftDiverBinPath=[${swiftDiverBinPath}],
 		shellPath=[${shellPath}]`)
 
@@ -364,7 +364,7 @@ async function extractHoverHelp(cursorInfo: Object): Promise<MarkedString[]> {
 		return rt
 	}
 	//TODO wait vscode to support full html rendering...
-	//stripe all sub elements 
+	//stripe all sub elements
 	function stripeOutTags(str) {
 		return str.replace(/(<.[^(><.)]+>)/g, (m, c) => '')
 	}
@@ -506,7 +506,7 @@ export function getShellExecPath() {
 /**
  * NOTE:
  * now the SDE only support the convention based build
- * 
+ *
  * TODO: to use build yaml?
  */
 let argsImportPaths: string[] = null
