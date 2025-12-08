@@ -1,7 +1,7 @@
 {
   "name": "sde",
-  "displayName": "Swift Development Environment",
-  "description": "Swift Development Environment based on VS Code",
+  "displayName": "SDE",
+  "description": "SDE",
   "author": {
     "name": "Jin Mingjian",
     "email": "jin.phd@gmail.com",
@@ -26,7 +26,6 @@
     "Languages"
   ],
   "keywords": [
-    "swift",
     "sde",
     "linux",
     "lldb"
