@@ -8,7 +8,7 @@
     "url": "https://github.com/jinmingjian"
   },
   "license": "Apache-2.0",
-  "version": "2.0.20170209",
+  "version": "2.0.20251208",
   "publisher": "jinmingjian",
   "icon": "icons/icon.png",
   "galleryBanner": {
@@ -125,7 +125,7 @@
   "scripts": {
     "vscode:prepublish": "npm run build",
     "build": "npm run prepare-out && npm run peg1 && npm run peg2 && npm run copy-parser-dts && npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "",
     "prepare-out": "mkdir -p out/src/debug/lldbmi",
     "peg1": "pegjs -o out/src/debug/lldbmi/mi_output_parser.js src/debug/lldbmi/mi_output_grammar.pegjs",
     "peg2": "pegjs -o out/src/debug/lldbmi/raw_command_output_parser.js src/debug/lldbmi/raw_command_output_parser.pegjs",
@@ -133,15 +133,16 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
-    "typescript": "^2.0.0",
-    "vscode": "^1.0.0",
+    "@types/bunyan": "latest",
+    "@types/node": "latest",
+    "js-yaml": "^3.7.0",
     "mocha": "^2.3.3",
     "pegjs": "^0.10.0",
-    "js-yaml": "^3.7.0",
-    "@types/node": "latest",
-    "@types/bunyan": "latest"
+    "typescript": "^2.0.0",
+    "vscode": "^1.0.0"
   },
   "dependencies": {
+    "@vscode/vsce": "^3.7.1",
     "bunyan": "^1.8.5",
     "fs-promise": "^1.0.0",
     "vscode-debugadapter": "^1.15.0",
