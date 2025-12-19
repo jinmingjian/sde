@@ -14,6 +14,8 @@ import {
 } from 'vscode-languageserver'
 import * as fs from 'fs'
 import * as sourcekitProtocol from './sourcekites'
+import Uri from 'vscode-uri'
+import { isWsl, winPath, wslPath } from '../WslUtil'
 
 export const spawn = require('child_process').spawn
 
@@ -36,7 +38,7 @@ export function initializeModuleMeta() {
 	const shPath = getShellExecPath()
 	trace('***getShellExecPath: ', shPath)
 	const sp = spawn(shPath, ["-c",
-		`cd ${workspaceRoot} && ${swiftDiverBinPath} package describe --type json`,
+		`cd ${isWsl ? wslPath(workspaceRoot) : workspaceRoot} && ${swiftDiverBinPath} package describe --type json`,
 	])
 	sp.stdout.on('data', (data) => {
 		if (isTracingOn) {
@@ -87,7 +89,7 @@ export function getAllSourcePaths(srcPath: string): string[] {
 }
 
 // After the server has started the client sends an initilize request. The server receives
-// in the passed params the rootPath of the workspace plus the client capabilites. 
+// in the passed params the rootPath of the workspace plus the client capabilites.
 export let workspaceRoot: string;
 export let isTracingOn: boolean;
 connection.onInitialize((params: InitializeParams, cancellationToken): InitializeResult => {
@@ -148,8 +150,8 @@ connection.onDidChangeConfiguration((change) => {
 	swiftDiverBinPath = sdeSettings.path.swift_driver_bin
 	shellPath = sdeSettings.path.shell
 
-	trace(`-->onDidChangeConfiguration tracing: 
-	    swiftDiverBinPath=[${swiftDiverBinPath}],
+	trace(`-->onDidChangeConfiguration tracing:
+		swiftDiverBinPath=[${swiftDiverBinPath}],
 		shellPath=[${shellPath}]`)
 
 	//FIXME reconfigure when configs haved
@@ -226,7 +228,7 @@ connection.onDidChangeWatchedFiles((watched) => {
 // This handler provides the initial list of the completion items.
 connection.onCompletion(({textDocument, position}): Thenable<CompletionItem[]> => {
 	const document: TextDocument = documents.get(textDocument.uri)
-	const srcPath = document.uri.substring(7, document.uri.length)
+	const srcPath = fromDocumentUri(document)
 	const srcText: string = document.getText() //NOTE needs on-the-fly buffer
 	const offset = document.offsetAt(position) //FIXME
 	return sourcekitProtocol
@@ -340,7 +342,7 @@ function toCompletionItemKind(keyKind: string): CompletionItemKind {
 
 connection.onHover(({textDocument, position}): Promise<Hover> => {
 	const document: TextDocument = documents.get(textDocument.uri);
-	const srcPath = document.uri.substring(7, document.uri.length);
+	const srcPath = fromDocumentUri(document);
 	const srcText: string = document.getText();//NOTE needs on-the-fly buffer
 	const offset = document.offsetAt(position);//FIXME
 	return sourcekitProtocol
@@ -364,7 +366,7 @@ async function extractHoverHelp(cursorInfo: Object): Promise<MarkedString[]> {
 		return rt
 	}
 	//TODO wait vscode to support full html rendering...
-	//stripe all sub elements 
+	//stripe all sub elements
 	function stripeOutTags(str) {
 		return str.replace(/(<.[^(><.)]+>)/g, (m, c) => '')
 	}
@@ -400,17 +402,18 @@ async function extractHoverHelp(cursorInfo: Object): Promise<MarkedString[]> {
 
 connection.onDefinition(({textDocument, position}): Promise<Definition> => {
 	const document: TextDocument = documents.get(textDocument.uri);
-	const srcPath = document.uri.substring(7, document.uri.length);
+	const srcPath = fromDocumentUri(document);
 	const srcText: string = document.getText();//NOTE needs on-the-fly buffer
 	const offset = document.offsetAt(position);//FIXME
 	return sourcekitProtocol
 		.cursorInfo(srcText, srcPath, offset)
 		.then(function (cursorInfo) {
-			const filepath = cursorInfo['key.filepath']
+			let filepath = cursorInfo['key.filepath']
 			if (filepath) {
+				if (isWsl) filepath = winPath(filepath)
 				const offset = cursorInfo['key.offset']
 				const len = cursorInfo['key.length']
-				const fileUri = `file://${filepath}`
+				const fileUri = Uri.file(filepath).toString()
 				let document: TextDocument = documents.get(fileUri);//FIXME
 				//FIXME more here: https://github.com/Microsoft/language-server-protocol/issues/96
 				if (!document) {//FIXME just make a temp doc to let vscode help us
@@ -458,7 +461,7 @@ function fromDocumentUri(document: { uri: string; }): string {
 }
 
 function fromUriString(uri: string): string {
-	return uri.substring(7, uri.length)
+	return Uri.parse(uri).fsPath
 }
 
 /*
@@ -506,7 +509,7 @@ export function getShellExecPath() {
 /**
  * NOTE:
  * now the SDE only support the convention based build
- * 
+ *
  * TODO: to use build yaml?
  */
 let argsImportPaths: string[] = null
@@ -515,7 +518,9 @@ export function loadArgsImportPaths(): string[] {
 	if (!argsImportPaths) {
 		argsImportPaths = []
 		argsImportPaths.push("-I")
-		argsImportPaths.push(path.join(workspaceRoot, '.build', 'debug'))
+		var debug = path.join(workspaceRoot, '.build', 'debug')
+		if (isWsl) debug = wslPath(debug)
+		argsImportPaths.push(debug)
 		//FIXME system paths can not be available automatically?
 		// rt += " -I"+"/usr/lib/swift/linux/x86_64"
 		argsImportPaths.push("-I")

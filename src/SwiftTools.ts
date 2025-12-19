@@ -17,11 +17,11 @@ import {
 let stdout: string, stderr: string, error: Error;
 ///managed build now only support to invoke on save
 //ignore options
-export function buildPackage(swiftBinPath: string, pkgPath: string, options: string) {
+export function buildPackage(shellPath: string, swiftBinPath: string, pkgPath: string, options: string) {
     stdout = null
     stderr = null
     error = null
-    const sb = cp.spawn(swiftBinPath, ["build"], { cwd: pkgPath });
+    const sb = cp.spawn(shellPath, ["-c", `${swiftBinPath} build`], { cwd: pkgPath });
     sb.stdout.on('data', (data) => {
         stdout += data
         dumpInConsole("" + data)
@@ -59,7 +59,7 @@ function dumpDiagnostics() {
     let diags: Array<string[]> = []
     const lines = stdout.split("\n")
 
-    function isDiagStartLine(line: string) {//FIXME 
+    function isDiagStartLine(line: string) {//FIXME
         const sa = line.split(":")
         if (sa.length > 4) {
             const sev = sa[3].trim();

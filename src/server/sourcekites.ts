@@ -8,6 +8,8 @@ import {
 
 import * as stream from 'stream'
 
+import { isWsl, wslPath } from '../WslUtil'
+
 let skProtocolProcess = null
 let skeHandler = null
 export function initializeSourcekite() {
@@ -20,7 +22,7 @@ function createSkProtocolProcess() {
     if (server.skProtocolProcessAsShellCmd) {
         return server.spawn(server.getShellExecPath(), ["-c", `docker run --rm -v ${server.workspaceRoot}:${server.workspaceRoot} -i jinmingjian/docker-sourcekite`])
     } else {
-        return server.spawn(server.skProtocolPath)
+        return server.spawn(server.getShellExecPath(), ["-c", server.skProtocolPath])
     }
 }
 
@@ -128,7 +130,7 @@ class SourcekiteResponseHandler {
 
 }
 
-let reqCount = 0 //FIXME 
+let reqCount = 0 //FIXME
 
 type RequestType = "codecomplete" | "cursorinfo" | "demangle" | "editor.open" | "editor.formattext"
 
@@ -173,16 +175,16 @@ function request(
     offset: number): Promise<any> {
 
     const sourcePaths = server.getAllSourcePaths(srcPath)
-    const compilerargs = JSON.stringify((sourcePaths ? sourcePaths : [srcPath])
+    const compilerargs = JSON.stringify((sourcePaths ? isWsl ? sourcePaths.map((p) => { return wslPath(p); }) : sourcePaths : [isWsl ? wslPath(srcPath) : srcPath])
         .concat(server.loadArgsImportPaths())
     )
     srcText = JSON.stringify(srcText)
     let request = `{
   key.request: source.request.${requestType},
-  key.sourcefile: "${srcPath}",
+  key.sourcefile: "${isWsl ? wslPath(srcPath) : srcPath}",
   key.offset: ${offset},
   key.compilerargs: ${compilerargs},
-  key.sourcetext: ${srcText} 
+  key.sourcetext: ${srcText}
 }
 
 `
